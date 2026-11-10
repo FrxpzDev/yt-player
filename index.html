@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<title>YT Player</title>
+<style>
+    * { margin: 0; padding: 0; }
+    html, body { width: 100%; height: 100%; overflow: hidden; background: #000; }
+    iframe {
+        position: absolute;
+        top: 50%; left: 50%;
+        width: 100vw; height: 56.25vw;
+        min-height: 100vh; min-width: 177.78vh;
+        transform: translate(-50%, -50%) scale(1.15);
+        border: 0;
+        pointer-events: none;
+    }
+</style>
+</head>
+<body>
+<iframe id="yt" allow="autoplay; encrypted-media"
+        referrerpolicy="strict-origin-when-cross-origin"></iframe>
+<script>
+    // Usage: index.html?v=VIDEO_ID&mute=1
+    const q = new URLSearchParams(location.search);
+    const id = (q.get("v") || "").replace(/[^A-Za-z0-9_-]/g, "").slice(0, 11);
+    const mute = q.get("mute") === "0" ? 0 : 1;
+    if (id) {
+        const p = new URLSearchParams({
+            autoplay: 1, mute, controls: 0, loop: 1, playlist: id,
+            modestbranding: 1, rel: 0, iv_load_policy: 3, disablekb: 1,
+            playsinline: 1, enablejsapi: 1, origin: location.origin
+        });
+        document.getElementById("yt").src = "https://www.youtube.com/embed/" + id + "?" + p;
+    }
+</script>
+</body>
+</html>
